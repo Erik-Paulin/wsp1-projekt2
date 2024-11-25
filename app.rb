@@ -20,11 +20,6 @@ class App < Sinatra::Base
         end
     end
 
-    get '/todos/index' do
-      @todos = db.execute('SELECT * FROM todos')
-      erb(:"todos/index")
-    end
-
     configure do
         enable :sessions
         set :session_secret, SecureRandom.hex(64)
@@ -58,11 +53,21 @@ class App < Sinatra::Base
     
     end
 
-    get '/' do
-        @todos = db.execute('SELECT * FROM todos')
-        erb(:"index")
+    get '/todos/index' do
+      @todos = db.execute('SELECT * FROM todos')
+      erb(:"todos/index")
     end
 
-    
+    get '/todos/:id' do |id|
+      @todo = db.execute('SELECT * FROM todos where id=?', id).first
+
+      erb(:"todos/show")
+    end
+
+    get '/todos/:id/edit' do |id|
+      @id = params[:id]
+      @todo = db.execute('SELECT * FROM todos where id=?', id).first
+      erb(:"todos/edit")
+    end
 
 end

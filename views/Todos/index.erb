@@ -1,13 +1,15 @@
-<img src="/img/glhf.png">
+
+
 <ul>
-  <% @todos.each do |todo| %>
-    <li>
-      <a href="/todos/<%= todo['id']%>"><%= todo['name'] %></a>
-      <form action="/todos/<%=todo["id"]%>/delete" method="post">
-        <input type="submit" value="Ta bort">
-      </form>
-      <a href="/todos/<%= todo['id']%>/edit">Ändra</a>
-    </li>
-  <% end %>
+<% @todos.each do |todo| %>
+  <li>
+    <a href="/todos/<%= todo['id']%>"><%= todo['name'] %></a>
+    <p><%= todo ['description'] %></p>
+    <form action="/todos/<%=todo["id"]%>/delete" method="post">
+      <input type="submit" value="Ta bort">
+    </form>
+    <a href="/todos/<%= todo['id']%>/edit">Ändra</a>
+  </li>
+<% end %>
 </ul>
 

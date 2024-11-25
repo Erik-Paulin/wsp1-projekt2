@@ -1,0 +1,9 @@
+<form method="post" action="/todos/<%=@id%>/update">
+    <label for="tsk_name">Task name:</label><br>
+    <input type="text" id="tsk_name" name="tsk_name" value="<%= @todo['name'] %>"><br>
+
+    <label for="tsk_desc">Task description:</label><br>
+    <input type="text" id="tsk_desc" name="tsk_desc" value="<%= @todo['description'] %>"><br>
+
+    <input type="submit" value="Update">
+</form>

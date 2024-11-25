@@ -21,12 +21,12 @@ class Seeder
   end
 
   def self.populate_tables
-    db.execute('INSERT INTO todos (name, description) VALUES ("Äpple ", "En rund frukt som finns i många olika färger.")')
-    db.execute('INSERT INTO todos (name, description) VALUES ("Päron ", "En nästan rund, men lite avläng, frukt. Oftast mjukt fruktkött.")')
-    db.execute('INSERT INTO todos (name, description) VALUES ("Banan ", "En avlång gul frukt.")')
-    db.execute('INSERT INTO todos (name, description) VALUES ("Appelsin ", "En orange rund frukt.")')
-    db.execute('INSERT INTO todos (name, description) VALUES ("Mandarin ", "En orange rund frukt.")')
-    db.execute('INSERT INTO todos (name, description) VALUES ("Tsatsuma ", "En orange rund frukt.")')
+    db.execute('INSERT INTO todos (name, description) VALUES ("Task: 1", "This task needs to be done")')
+    db.execute('INSERT INTO todos (name, description) VALUES ("Task: 2", "This task needs to be done")')
+    db.execute('INSERT INTO todos (name, description) VALUES ("Task: 3", "This task needs to be done")')
+    db.execute('INSERT INTO todos (name, description) VALUES ("Task: 4", "This task needs to be done")')
+    db.execute('INSERT INTO todos (name, description) VALUES ("Task: 5", "This task needs to be done")')
+    db.execute('INSERT INTO todos (name, description) VALUES ("Task: 6", "This task needs to be done")')
     db.execute('INSERT INTO todos (username, password) VALUES ("Admin", "adminPass")')
   end
 
