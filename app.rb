@@ -12,15 +12,17 @@ class App < Sinatra::Base
 
     get '/' do
         if session[:user_id]
-          erb(:"Admin/index")
+          redirect('todos/admin/index')
+          erb(:"todos/admin/index")
         else
-          erb :"Todos/index"
+          redirect('/todos/index')
+          erb(:"todos/index")
         end
     end
 
-    get '/Todos/index' do
-      @todos =db.execute('SELECT * from todos')
-      erb(:"Todos/index")
+    get '/todos/index' do
+      @todos = db.execute('SELECT * FROM todos')
+      erb(:"todos/index")
     end
 
     configure do
