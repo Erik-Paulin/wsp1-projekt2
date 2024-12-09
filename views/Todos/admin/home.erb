@@ -1,0 +1,15 @@
+<a href="/todos/admin/new"> Ny task </a>
+
+<ul>
+<% @todos.each do |todo| %>
+  <li>
+    <a href="/todos/admin/<%= todo['id']%>/show"><%= todo['name'] %></a>
+    <p><%= todo ['description'] %></p>
+    <form action="/todos/admin/<%=todo["id"]%>/delete" method="post">
+      <input type="submit" value="Ta bort">
+    </form>
+    <a href="/todos/admin/<%= todo['id']%>/edit">Ändra</a>
+  </li>
+<% end %>
+</ul>
+

@@ -12,8 +12,8 @@ class App < Sinatra::Base
 
     get '/' do
         if session[:user_id]
-          redirect('todos/admin/index')
-          erb(:"todos/admin/index")
+          redirect('todos/admin/home')
+          erb(:"todos/admin/home")
         else
           redirect('/todos/index')
           erb(:"todos/index")
@@ -24,16 +24,21 @@ class App < Sinatra::Base
         enable :sessions
         set :session_secret, SecureRandom.hex(64)
     end
-    post '/login' do
+    
+    get '/todos/index' do
+      erb(:"todos/index")
+    end
+
+    post '/todos/index' do
         request_username = params[:username]
         request_plain_password = params[:password]
     
-        user = db.execute("SELECT * FROM users WHERE username = ?", request_username).first
+        user = db.execute("SELECT * FROM user WHERE username = ?", request_username).first
     
         unless user
-            p "/login : Invalid username."
+            p "/todos/index : Invalid username."
             status 401
-            redirect '/unauthorized'
+            redirect '/todos/unauthorized'
         end
         
         db_id = user["id"].to_i
@@ -42,32 +47,67 @@ class App < Sinatra::Base
         bcrypt_db_password = BCrypt::Password.new(db_password_hashed)
 
         if bcrypt_db_password == request_plain_password
-          p "/login : Logged in -> redirecting to admin"
+          p "/todos/admin/home : Logged in -> redirecting to admin"
           session[:user_id] = db_id
-          redirect '/admin'
+          redirect '/todos/admin/home'
         else
-          p "/login : Invalid password."
+          p "/todos/index : Invalid password."
           status 401
-          redirect '/unauthorized'
+          redirect '/todos/unauthorized'
         end
     
     end
-
-    get '/todos/index' do
-      @todos = db.execute('SELECT * FROM todos')
-      erb(:"todos/index")
+    
+    get '/todos/unauthorized' do
+      erb(:"todos/unauthorized")
+    end
+    
+    get '/todos/logout' do
+      p "/logout : Logging out"
+      session.clear
+      redirect '/'
     end
 
-    get '/todos/:id' do |id|
+    get '/todos/admin/home' do
+      @todos = db.execute('SELECT * FROM todos')
+      erb(:"todos/admin/home")
+    end
+
+    get '/todos/admin/:id/show' do |id|
       @todo = db.execute('SELECT * FROM todos where id=?', id).first
 
-      erb(:"todos/show")
+      erb(:"todos/admin/show")
     end
 
-    get '/todos/:id/edit' do |id|
+    get '/todos/admin/:id/edit' do |id|
       @id = params[:id]
       @todo = db.execute('SELECT * FROM todos where id=?', id).first
-      erb(:"todos/edit")
+      erb(:"todos/admin/edit")
+    end
+
+    get '/todos/admin/new' do
+      erb(:"todos/admin/new")
+    end
+    
+    post '/todos/admin/home' do
+      name = params[:task_name] 
+      desc = params[:task_desc] 
+      
+      db.execute("INSERT INTO todos (name, description) VALUES(?, ?)", [name, desc])
+      redirect('todos/admin/home')
+    end 
+
+    post '/todos/admin/:id/delete' do | id |
+      db.execute('DELETE FROM todos WHERE id=?', params['id'])
+      redirect('/todos/admin/home')
+    end
+    post "/todos/admin/:id/update" do | id |
+      p params
+      name = params[:task_name]
+      desc = params[:task_desc] 
+
+      db.execute('UPDATE todos SET name=?, description=? WHERE id=?', [name, desc, id])
+      redirect('todos/admin/home')
     end
 
 end

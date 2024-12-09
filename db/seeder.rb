@@ -11,23 +11,23 @@ class Seeder
 
   def self.drop_tables
     db.execute('DROP TABLE IF EXISTS todos')
-    db.execute('DROP TABLE IF EXISTS users')
+    db.execute('DROP TABLE IF EXISTS user')
   end
 
   def self.create_tables
     db.execute('CREATE TABLE todos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, description TEXT)')
     db.execute('CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT)')
-
   end
 
   def self.populate_tables
+    password_hashed = BCrypt::Password.create("123")
     db.execute('INSERT INTO todos (name, description) VALUES ("Task: 1", "This task needs to be done")')
     db.execute('INSERT INTO todos (name, description) VALUES ("Task: 2", "This task needs to be done")')
     db.execute('INSERT INTO todos (name, description) VALUES ("Task: 3", "This task needs to be done")')
     db.execute('INSERT INTO todos (name, description) VALUES ("Task: 4", "This task needs to be done")')
     db.execute('INSERT INTO todos (name, description) VALUES ("Task: 5", "This task needs to be done")')
     db.execute('INSERT INTO todos (name, description) VALUES ("Task: 6", "This task needs to be done")')
-    db.execute('INSERT INTO todos (username, password) VALUES ("Admin", "adminPass")')
+    db.execute('INSERT INTO user (username, password) VALUES (?, ?)',["Erik", password_hashed])
   end
 
   private
