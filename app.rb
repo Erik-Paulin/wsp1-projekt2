@@ -102,7 +102,6 @@ class App < Sinatra::Base
       redirect('/todos/admin/home')
     end
     post "/todos/admin/:id/update" do | id |
-      p params
       name = params[:task_name]
       desc = params[:task_desc] 
 
