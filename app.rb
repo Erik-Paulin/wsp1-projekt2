@@ -81,7 +81,7 @@ class App < Sinatra::Base
 
     get '/todos/admin/:id/edit' do |id|
       @id = params[:id]
-      @todo = db.execute('SELECT * FROM todos where id=?', id).first
+      @todo = db.execute('SELECT * FROM todos where id=?', id.to_i).first
       erb(:"todos/admin/edit")
     end
 
@@ -90,8 +90,8 @@ class App < Sinatra::Base
     end
     
     post '/todos/admin/home' do
-      name = params[:task_name] 
-      desc = params[:task_desc] 
+      name = params[:tsk_name] 
+      desc = params[:tsk_desc] 
       
       db.execute("INSERT INTO todos (name, description) VALUES(?, ?)", [name, desc])
       redirect('todos/admin/home')
@@ -102,8 +102,8 @@ class App < Sinatra::Base
       redirect('/todos/admin/home')
     end
     post "/todos/admin/:id/update" do | id |
-      name = params[:task_name]
-      desc = params[:task_desc] 
+      name = params[:tsk_name]
+      desc = params[:tsk_desc] 
 
       db.execute('UPDATE todos SET name=?, description=? WHERE id=?', [name, desc, id])
       redirect('todos/admin/home')
